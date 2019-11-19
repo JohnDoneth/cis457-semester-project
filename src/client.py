@@ -3,11 +3,11 @@ import sys
 import os
 
 from menu import CursesMenu
-from screen import SCREEN_MANAGER, ScreenManager
+from screen import ScreenManager
 from screens.connect import ConnectScreen
+from screens.menu import MenuScreen
 
 if __name__ == "__main__":
-
     stdscr = curses.initscr()
 
     # init curses and curses input
@@ -15,7 +15,7 @@ if __name__ == "__main__":
     curses.cbreak()
     curses.start_color()
     curses.curs_set(0)  # Hide cursor
-    # screen.keypad(1)
+    stdscr.keypad(1)
 
     # set up color pair for highlighted option
     curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
@@ -25,28 +25,25 @@ if __name__ == "__main__":
     # stdscr.addstr("Pretty text", curses.color_pair(1))
     # stdscr.refresh()
 
-    SCREEN_MANAGER = ScreenManager(stdscr)
-    SCREEN_MANAGER.push(ConnectScreen())
+    manager = ScreenManager(stdscr)
+    manager.push(MenuScreen())
 
-    input_key = stdscr.getch()
-    while input_key != 27:
-        SCREEN_MANAGER.handle_event(input_key)
+    try:
+        while True:
+            input_key = stdscr.getch()
 
-        input_key = stdscr.getch()
+            if input_key == 27:
+                break
+
+            manager.handle_event(input_key)
+
+    except KeyboardInterrupt:
         pass
 
-    menu = {"title": "Semester Project", "type": "menu", "subtitle": "Select an action"}
-
-    option_1 = {
-        "title": "Connect to matchmaking server",
-        "type": "command",
-        "command": "echo Hello World!",
-    }
-
-    menu["options"] = [option_1]
-
-    # m = CursesMenu(menu)
-    # selected_action = m.display()
-
-    # if selected_action["type"] != "exitmenu":
-    #    os.system(selected_action["command"])
+    # shutdown code
+    curses.nocbreak()
+    stdscr.clear()
+    stdscr.keypad(0)
+    curses.echo()
+    curses.endwin()
+    print("Thanks for playing!")

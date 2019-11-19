@@ -3,6 +3,10 @@ import curses
 
 
 class ConnectScreen(Screen):
+    """
+    Connect screen
+    """
+
     def on_enter(self):
         # print("screen entered")
 
@@ -14,8 +18,8 @@ class ConnectScreen(Screen):
         # print("screen exited")
 
     def on_event(self, event):
-        self.window.addstr(f"{event}", curses.color_pair(1))
-        self.window.refresh()
+        # self.window.addstr(f"{event}", curses.color_pair(1))
+        # self.window.refresh()
 
         pass
         # print(f"event {event}")
