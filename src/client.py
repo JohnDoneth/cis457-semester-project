@@ -22,9 +22,6 @@ if __name__ == "__main__":
     hilite_color = curses.color_pair(1)
     normal_color = curses.A_NORMAL
 
-    # stdscr.addstr("Pretty text", curses.color_pair(1))
-    # stdscr.refresh()
-
     manager = ScreenManager(stdscr)
     manager.push(MenuScreen())
 
@@ -32,10 +29,14 @@ if __name__ == "__main__":
         while True:
             input_key = stdscr.getch()
 
+            if input_key == curses.KEY_RESIZE:
+                manager.handle_resize()
+
             if input_key == 27:
                 break
 
             manager.handle_event(input_key)
+            manager.handle_resize()
 
     except KeyboardInterrupt:
         pass

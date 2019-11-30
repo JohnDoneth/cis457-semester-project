@@ -23,9 +23,7 @@ class CreateScreen(Screen):
         self.hilite_color = curses.color_pair(1)
         self.normal_color = curses.A_NORMAL
 
-        self.render()
-
-    def render(self):
+    def on_draw(self):
         self.window.addstr(1, 2, "Connected to 127.0.0.1 - Creating Game")
 
         option_count = len(self.options)
@@ -36,8 +34,6 @@ class CreateScreen(Screen):
                 self._draw_option(option, self.hilite_color)
             else:
                 self._draw_option(option, self.normal_color)
-
-        self.window.refresh()
 
     def on_exit(self):
         pass
@@ -67,5 +63,6 @@ class CreateScreen(Screen):
             else:
                 self.selection = option_count
 
-        self.render()
+        self.window.erase()
+        self.on_draw()
         # print(f"event {event}")

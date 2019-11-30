@@ -5,7 +5,6 @@ from curses.panel import new_panel, update_panels
 class Screen:
     manager = None
     window = None
-    panel = None
 
     def on_enter(self):
         pass
@@ -14,6 +13,9 @@ class Screen:
         pass
 
     def on_event(self, event):
+        pass
+
+    def on_draw(self):
         pass
 
 
@@ -26,20 +28,26 @@ class ScreenManager:
         self.stdscr = stdscr
 
     def push(self, screen: Screen):
-        if self.current():
-            self.current().on_exit()
 
-        height, width = self.stdscr.getmaxyx()
+        self.stdscr.erase()
+
+        if self.current():
+            current = self.current()
+            current.on_exit()
 
         screen.manager = self
-        screen.window = curses.newwin(height, width)
-        screen.panel = new_panel(screen.window)
-        screen.panel.top()
-        update_panels()
-        curses.doupdate()
-
+        screen.window = self.stdscr
         self.screens.append(screen)
         self.current().on_enter()
+        self.current().on_draw()
+
+        self.stdscr.refresh()
+
+    def handle_resize(self):
+        self.stdscr.erase()
+
+        self.current().on_draw()
+        self.stdscr.refresh()
 
     def pop(self):
         self.screens.pop()

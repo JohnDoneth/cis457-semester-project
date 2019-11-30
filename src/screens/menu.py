@@ -22,16 +22,14 @@ class MenuScreen(Screen):
         )
 
     def on_enter(self):
-        self.window.addstr(1, 2, "Connected to 127.0.0.1!")
-        # self.window.refresh()
-
         self.hilite_color = curses.color_pair(1)
         self.normal_color = curses.A_NORMAL
 
         self.window.keypad(1)
-        self.render()
 
-    def render(self):
+    def on_draw(self):
+        self.window.addstr(1, 2, "Connected to 127.0.0.1!")
+
         option_count = len(self.options)
 
         self.window.border(0)
@@ -40,8 +38,6 @@ class MenuScreen(Screen):
                 self._draw_option(option, self.hilite_color)
             else:
                 self._draw_option(option, self.normal_color)
-
-        self.window.refresh()
 
     def on_exit(self):
         pass
@@ -75,5 +71,5 @@ class MenuScreen(Screen):
             else:
                 self.selection = option_count
 
-        self.render()
+        self.on_draw()
         # print(f"event {event}")
