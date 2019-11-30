@@ -21,9 +21,11 @@ class ConnectScreen(Screen):
 
     def on_enter(self):
         # print("screen entered")
+        pass
 
+    def on_draw(self):
+        self.window.border(0)
         self.window.addstr("Pretty text", curses.color_pair(1))
-        self.window.refresh()
 
     def on_exit(self):
         pass

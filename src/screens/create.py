@@ -1,6 +1,8 @@
 from screen import Screen
 import curses
 
+from screens.connect import ConnectScreen, GameType
+
 
 class CreateScreen(Screen):
     """
@@ -49,6 +51,14 @@ class CreateScreen(Screen):
 
         ENTER_KEY = ord("\n")
         if input_key == ENTER_KEY:
+
+            if self.selection == 0:
+                self.manager.push(ConnectScreen(GameType.RockPaperScissors))
+            elif self.selection == 1:
+                self.manager.push(ConnectScreen(GameType.TicTacToe))
+            else:
+                pass
+
             pass
 
         if input_key in down_keys:

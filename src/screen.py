@@ -37,6 +37,7 @@ class ScreenManager:
 
         screen.manager = self
         screen.window = self.stdscr
+
         self.screens.append(screen)
         self.current().on_enter()
         self.current().on_draw()
